@@ -1,10 +1,12 @@
 import React from 'react';
-
 import MovieListItem from './MovieListItem';
 import MovieFooter from './MovieFooter';
+import { connect } from 'react-redux';
+import{toggleFavorite} from '../actions/favoriteActions'
 
 const MovieList = (props)=> {
-    const movies = [];
+    props.toggleFavorite(true)
+    const {movieList}= props;
 
     return (
         <div className="col">
@@ -21,14 +23,21 @@ const MovieList = (props)=> {
 
                 <tbody>
                     {
-                        movies.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
+                    movieList.map(movie=><MovieListItem key={movie.id} movie={movie}/>)
                     }
                 </tbody>
             </table>
             
-            <MovieFooter totalMovies={movies.length}/>
+            <MovieFooter/>
         </div>
     );
 }
-
-export default MovieList;
+const mapStatetoProps=(state)=>{
+return{
+    movieList:state.movie.movies
+}
+}
+const mapActionsToProps={
+    toggleFavorite
+}
+export default connect(mapStatetoProps,mapActionsToProps)(MovieList)
